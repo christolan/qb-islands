@@ -1,0 +1,527 @@
+/** qBittorrent Islands — light, IDE-inspired skin for qBittorrent 4.6.x.
+ * Applied only when skin.js adds `qbis-islands` to <body>. */
+
+body.qbis-islands {
+  --qb-canvas: #f2f3f5;
+  --qb-canvas-top: #f7f8fa;
+  --qb-surface: #fff;
+  --qb-surface-alt: #f7f8fa;
+  --qb-hover: #f4f5f7;
+  --qb-active: #e8f1ff;
+  --qb-selected: #dbeafe;
+  --qb-border: #e3e5ea;
+  --qb-border-strong: #c9ced9;
+  --qb-text: #1f2329;
+  --qb-text-secondary: #5e6472;
+  --qb-text-muted: #8c919d;
+  --qb-accent: #3574f0;
+  --qb-accent-hover: #2b66da;
+  --qb-accent-text: #1858c8;
+  --qb-accent-soft: #e7f0ff;
+  --qb-radius: 10px;
+  --qb-radius-sm: 6px;
+  --qb-radius-md: 8px;
+  --qb-shadow: 0 1px 2px rgba(31, 35, 41, .06), 0 4px 16px rgba(31, 35, 41, .05);
+  --qb-shadow-pop: 0 2px 6px rgba(31, 35, 41, .08), 0 12px 32px rgba(31, 35, 41, .14);
+  --qb-gap: 10px;
+  --qb-footer-height: 34px;
+  background: linear-gradient(180deg, var(--qb-canvas-top), var(--qb-canvas) 220px) fixed !important;
+  color: var(--qb-text) !important;
+  color-scheme: light;
+  font-family: "JetBrains Sans", "Segoe UI", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  accent-color: var(--qb-accent);
+}
+
+body.qbis-islands #windowUnderlay { background: rgba(23, 26, 33, .24) !important; }
+/* The WebUI toggles visibility with a plain `.invisible` utility; keep it
+   authoritative over the display values forced by this skin. Class selectors
+   alone lose to the id-scoped rules below, so restate the layout ids. */
+body.qbis-islands .invisible,
+body.qbis-islands #mainColumn.invisible,
+body.qbis-islands #searchTabColumn.invisible,
+body.qbis-islands #rssTabColumn.invisible,
+body.qbis-islands #logTabColumn.invisible,
+body.qbis-islands #filtersColumn.invisible,
+body.qbis-islands #filtersColumn_handle.invisible,
+body.qbis-islands #transferList_wrapper.invisible,
+body.qbis-islands #propertiesPanel_wrapper.invisible,
+body.qbis-islands #torrentsFilterToolbar.invisible,
+body.qbis-islands #desktopNavbar.invisible,
+body.qbis-islands #mochaToolbar.invisible,
+body.qbis-islands #desktopFooterWrapper.invisible { display: none !important; }
+body.qbis-islands #desktop {
+  display: flex !important; flex-direction: column !important;
+  height: 100vh !important; min-height: 0 !important;
+  padding: var(--qb-gap) !important; box-sizing: border-box !important;
+  position: relative !important; overflow: hidden !important;
+}
+body.qbis-islands #desktopHeader { flex: 0 0 auto !important; background: transparent !important; }
+
+/* Shared card treatment — every card surface uses the same radius, border,
+   shadow and outer gap; card headers (table header, properties tab strip) are
+   inset content of their card, not standalone surfaces. */
+body.qbis-islands #desktopNavbar,
+body.qbis-islands #mochaToolbar,
+body.qbis-islands #filtersColumn,
+body.qbis-islands #transferList_wrapper,
+body.qbis-islands #propertiesPanel_wrapper,
+body.qbis-islands #desktopFooterWrapper {
+  background: var(--qb-surface) !important;
+  border: 1px solid var(--qb-border) !important;
+  border-radius: var(--qb-radius) !important;
+  box-shadow: var(--qb-shadow) !important;
+}
+
+/* Main menu — stock pins the bar to 20px and lets the item row hang out of
+   it (float-collapsed ul + asymmetric anchor padding); size it by content and
+   center for any font metrics (CJK line boxes are taller). */
+body.qbis-islands #desktopNavbar {
+  overflow: visible !important; height: auto !important;
+  /* own stacking context above the toolbar so open dropdowns are never
+     painted under the toolbar card or its icons */
+  position: relative !important; z-index: 500 !important;
+}
+body.qbis-islands #desktopNavbar > ul { padding: 5px 8px !important; display: flex !important; align-items: center !important; }
+body.qbis-islands #desktopNavbar ul li a { padding: 5px 10px !important; }
+
+/* keep the last search filter row off the card edge (CJK line boxes run tall) */
+body.qbis-islands #searchResults { padding-bottom: 8px !important; }
+body.qbis-islands #desktopNavbar ul li a {
+  border-radius: var(--qb-radius-sm) !important; color: var(--qb-text-secondary) !important;
+  text-shadow: none !important; transition: color 120ms ease, background-color 120ms ease;
+}
+body.qbis-islands #desktopNavbar ul li:hover > a,
+body.qbis-islands #desktopNavbar ul li a:hover { background: var(--qb-hover) !important; color: var(--qb-text) !important; }
+body.qbis-islands #desktopNavbar ul li ul {
+  z-index: 1000 !important; padding: 6px !important; background: var(--qb-surface) !important;
+  border: 1px solid var(--qb-border) !important; border-radius: var(--qb-radius-md) !important;
+  box-shadow: var(--qb-shadow-pop) !important; overflow: hidden;
+}
+body.qbis-islands #desktopNavbar ul li ul li a { background: transparent !important; color: var(--qb-text) !important; border-radius: 4px !important; padding: 6px 14px 6px 10px !important; min-width: 170px; box-sizing: border-box; }
+/* stock pulls .MyMenuIcon left by 18px to meet its 20px anchor padding; with
+   the skin's 10px padding that clips the icon on the menu edge */
+body.qbis-islands #desktopNavbar ul li ul li a .MyMenuIcon { margin-left: 0 !important; }
+body.qbis-islands #desktopNavbar ul li ul li:hover,
+body.qbis-islands #desktopNavbar ul li ul li:hover a { background: var(--qb-accent-soft) !important; color: var(--qb-text) !important; }
+
+/* Toolbar — flex row so oversized icon pills can never poke out of the
+   stock 29px fixed height; the filter box is pushed right where stock floats it. */
+body.qbis-islands #mochaToolbar { margin-top: var(--qb-gap) !important; padding: 6px 8px !important; box-sizing: border-box !important; display: flex !important; flex-wrap: nowrap !important; align-items: center !important; height: auto !important; min-height: 0 !important; overflow: visible !important; }
+body.qbis-islands #mochaToolbar a {
+  /* inline-flex centers the icon and collapses whitespace text nodes that
+     would otherwise skew it 5px off the pill's midline */
+  display: inline-flex !important; align-items: center !important; justify-content: center !important;
+  line-height: 1 !important;
+  padding: 4px 5px !important;
+  border-radius: var(--qb-radius-sm) !important; opacity: 1; transition: background-color 120ms ease;
+}
+body.qbis-islands #torrentsFilterToolbar { margin-left: auto !important; margin-right: 14px !important; }
+body.qbis-islands #mochaToolbar #mainWindowTabs,
+body.qbis-islands #mochaToolbar #mainWindowTabs.toolbarTabs { margin: 0 !important; }
+/* the tab list collapses under its floated items; center items in the flex
+   line so the pill group sits exactly on the icon row's midline. Stock adds
+   `margin: 0 0 5px` to every li (and an 8px notch margin to each link) which
+   pushes the whole row off-center — clear both and space pills with gap. */
+body.qbis-islands #mainWindowTabsList { display: flex !important; align-items: center !important; gap: 2px; }
+body.qbis-islands #mainWindowTabsList li { margin: 0 !important; }
+body.qbis-islands #mainWindowTabsList li a { margin: 0 !important; padding: 3px 12px !important; line-height: 20px !important; }
+body.qbis-islands #mochaToolbar a:hover { background: var(--qb-hover) !important; }
+body.qbis-islands #mochaToolbar img { filter: grayscale(1) brightness(.45) contrast(1.15); opacity: .86; margin: 0 !important; }
+body.qbis-islands #mochaToolbar a:hover img { opacity: 1; }
+body.qbis-islands #mochaToolbar .divider { min-width: 0 !important; opacity: .55; }
+
+/* Transfer / Search / RSS behaves like an IDE segmented tab control. */
+body.qbis-islands #mochaToolbar #mainWindowTabs,
+body.qbis-islands #mainWindowTabsList { background: #eef0f3 !important; border-radius: var(--qb-radius-md) !important; }
+body.qbis-islands #mainWindowTabsList { padding: 2px !important; }
+body.qbis-islands #mainWindowTabsList li,
+body.qbis-islands #mochaToolbar #mainWindowTabs a,
+body.qbis-islands #mochaToolbar #mainWindowTabs a.tab { background: transparent !important; border-radius: var(--qb-radius-sm) !important; }
+body.qbis-islands #mochaToolbar #mainWindowTabs a,
+body.qbis-islands #mochaToolbar #mainWindowTabs a.tab {
+  margin: 0 !important; padding: 3px 12px !important; color: var(--qb-text-secondary) !important; text-shadow: none !important;
+}
+body.qbis-islands #mainWindowTabsList li.selected { background: var(--qb-surface) !important; box-shadow: 0 1px 3px rgba(31, 35, 41, .14) !important; }
+body.qbis-islands #mainWindowTabsList li.selected a,
+body.qbis-islands #mochaToolbar #mainWindowTabs a.selected,
+body.qbis-islands #mochaToolbar #mainWindowTabs a.tab.selected { color: var(--qb-accent) !important; font-weight: 600 !important; }
+body.qbis-islands #mochaToolbar #mainWindowTabs a:hover { background: transparent !important; color: var(--qb-text) !important; }
+
+/* Tabs */
+body.qbis-islands li.tab, body.qbis-islands #propertiesTabs li { background: transparent !important; border-radius: var(--qb-radius-sm) !important; }
+body.qbis-islands li.tab a, body.qbis-islands #propertiesTabs a {
+  background: transparent !important; border-radius: var(--qb-radius-sm) !important;
+  color: var(--qb-text-secondary) !important; text-shadow: none !important;
+}
+body.qbis-islands li.tab:hover a,
+body.qbis-islands #propertiesTabs li:hover a { background: var(--qb-hover) !important; color: var(--qb-text) !important; }
+body.qbis-islands li.tab.selected, body.qbis-islands #propertiesTabs li.selected { background: var(--qb-active) !important; }
+body.qbis-islands li.tab.selected a,
+body.qbis-islands #propertiesTabs li.selected a { color: var(--qb-accent) !important; font-weight: 600 !important; }
+body.qbis-islands #propertiesPanel_header,
+body.qbis-islands #propertiesPanel_headerContent,
+body.qbis-islands #propertiesPanel_header .toolbarTabs,
+body.qbis-islands .toolbarTabs,
+body.qbis-islands .toolbarTabs a { background: transparent !important; }
+/* the panel header strip is height-capped by MochaUI; keep the tab row inside it */
+body.qbis-islands #propertiesTabs,
+body.qbis-islands #panelTabs { display: flex !important; align-items: center !important; }
+body.qbis-islands #propertiesTabs li,
+body.qbis-islands #panelTabs li { margin: 0 !important; }
+/* tab states: default = quiet text; hover = light surface; selected keeps its
+   pill even under hover (stock flips selected tabs to a plain hover look) */
+body.qbis-islands #propertiesTabs li:hover a,
+body.qbis-islands #panelTabs li:hover a { background: var(--qb-hover) !important; color: var(--qb-text) !important; }
+body.qbis-islands #propertiesTabs li.selected a,
+body.qbis-islands #propertiesTabs li.selected:hover a,
+body.qbis-islands #panelTabs li.selected a,
+body.qbis-islands #panelTabs li.selected:hover a { background: transparent !important; color: var(--qb-accent) !important; font-weight: 600 !important; }
+body.qbis-islands .toolbarTabs a { padding: 3px 12px !important; line-height: 20px !important; }
+
+body.qbis-islands #torrentsFilterToolbar input,
+body.qbis-islands #mochaToolbar input[type="text"] {
+  min-height: 24px; padding: 3px 9px !important; border: 1px solid var(--qb-border-strong) !important;
+  border-radius: var(--qb-radius-sm) !important; background: var(--qb-surface) !important; color: var(--qb-text) !important; outline: none !important;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+body.qbis-islands #torrentsFilterToolbar input::placeholder,
+body.qbis-islands #mochaToolbar input[type="text"]::placeholder { color: var(--qb-text-muted); }
+body.qbis-islands #torrentsFilterToolbar input:focus,
+body.qbis-islands #mochaToolbar input[type="text"]:focus {
+  background: var(--qb-surface) !important; border-color: var(--qb-accent) !important;
+  box-shadow: 0 0 0 2px rgba(53, 116, 240, .16) !important;
+}
+
+/* Workspace */
+/* stock draws solid #909090 rules above/below the workspace; the cards are
+   the borders now */
+body.qbis-islands #pageWrapper { border: 0 !important; }
+body.qbis-islands #pageWrapper {
+  display: flex !important; flex: 1 1 auto !important; flex-direction: row !important; align-items: stretch !important;
+  height: auto !important; min-height: 0 !important;
+  margin: var(--qb-gap) 0 calc(var(--qb-gap) + var(--qb-footer-height)) !important;
+  box-sizing: border-box !important;
+}
+body.qbis-islands #filtersColumn {
+  flex: 0 0 auto !important; height: auto !important; box-sizing: border-box !important;
+  min-width: 208px !important; max-width: 340px !important; overflow: hidden auto;
+  padding-bottom: 6px !important;
+}
+
+/* qBittorrent uses image-backed drag handles. They read as hard divider lines
+   against the cards, so retain their hit areas while making them invisible. */
+body.qbis-islands #filtersColumn_handle,
+body.qbis-islands #transferList_handle,
+body.qbis-islands #filtersColumn_handle_icon,
+body.qbis-islands #transferList_handle_icon {
+  background: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: 0 !important;
+}
+body.qbis-islands #filtersColumn_handle_icon,
+body.qbis-islands #transferList_handle_icon { visibility: hidden; }
+/* the handles are flex items of the page columns — without an inflexible
+   basis the vertical one is squeezed to zero and the cards overlap */
+body.qbis-islands #filtersColumn_handle {
+  flex: 0 0 var(--qb-gap) !important; width: var(--qb-gap) !important; min-width: var(--qb-gap) !important;
+  margin: 0 !important; cursor: col-resize;
+}
+body.qbis-islands #transferList_handle {
+  flex: 0 0 var(--qb-gap) !important; height: var(--qb-gap) !important; min-height: var(--qb-gap) !important;
+  margin: 0 !important; cursor: row-resize;
+}
+
+/* Sidebar */
+body.qbis-islands #Filters_wrapper panel, body.qbis-islands #Filters_wrapper .panel { background: transparent !important; }
+body.qbis-islands #filtersColumn li, body.qbis-islands #Filters_wrapper li {
+  margin: 1px 8px !important; border-radius: var(--qb-radius-sm) !important; color: var(--qb-text-secondary) !important;
+  transition: color 120ms ease, background-color 120ms ease;
+}
+body.qbis-islands #filtersColumn li:hover,
+body.qbis-islands #Filters_wrapper li:hover { background: var(--qb-hover) !important; color: var(--qb-text) !important; }
+/* stock paints filter links white on hover (it pairs them with an orange
+   background); under the light hover surface they must follow the li color */
+body.qbis-islands #filtersColumn li:hover a,
+body.qbis-islands #Filters_wrapper li:hover a { color: inherit !important; }
+body.qbis-islands #filtersColumn li.selectedFilter,
+body.qbis-islands #Filters_wrapper li.selectedFilter { background: var(--qb-accent-soft) !important; color: var(--qb-accent-text) !important; font-weight: 600 !important; }
+body.qbis-islands #filtersColumn h3,
+body.qbis-islands #filtersColumn .filterTitle,
+body.qbis-islands #Filters_wrapper h3 {
+  padding: 6px 8px 4px !important;
+  color: var(--qb-text-muted) !important; font-size: 10px !important; font-weight: 700 !important;
+  letter-spacing: .7px; text-transform: uppercase;
+}
+body.qbis-islands #filtersColumn ul img { border-radius: 3px; }
+
+/* Transfer list */
+body.qbis-islands #mainColumn {
+  display: flex !important; flex: 1 1 auto !important; flex-direction: column !important; gap: var(--qb-gap);
+  width: auto !important; height: auto !important; min-width: 0 !important; background: transparent !important;
+  box-sizing: border-box !important; overflow: visible !important;
+}
+/* Search / RSS / Log columns: MochaUI leaves them width-less and swaps
+   visibility per tab; let the visible one absorb the free space. */
+body.qbis-islands #searchTabColumn,
+body.qbis-islands #rssTabColumn,
+body.qbis-islands #logTabColumn {
+  display: flex !important; flex: 1 1 auto !important; flex-direction: column !important;
+  width: auto !important; min-width: 0 !important; box-sizing: border-box !important; overflow: visible;
+}
+body.qbis-islands #searchTabColumn .panelWrapper,
+body.qbis-islands #rssTabColumn .panelWrapper,
+body.qbis-islands #logTabColumn .panelWrapper { display: flex !important; flex: 1 1 auto !important; flex-direction: column !important; min-height: 0 !important; }
+body.qbis-islands #searchTabColumn .panel,
+body.qbis-islands #rssTabColumn .panel,
+body.qbis-islands #logTabColumn .panel { flex: 1 1 auto !important; min-height: 0 !important; overflow: auto; border: 1px solid var(--qb-border) !important; border-radius: var(--qb-radius) !important; background: var(--qb-surface) !important; box-shadow: var(--qb-shadow) !important; box-sizing: border-box !important; }
+body.qbis-islands #transferList_wrapper {
+  display: flex !important; flex: 1 1 auto !important; flex-direction: column !important; min-height: 0 !important;
+  height: auto !important; padding: 6px !important; box-sizing: border-box !important; overflow: hidden !important;
+}
+body.qbis-islands #transferList_wrapper .panelWrapper, body.qbis-islands #transferList { background: transparent !important; }
+body.qbis-islands #transferList { flex: 1 1 auto !important; min-height: 0 !important; height: auto !important; }
+/* MochaUI panels carry a stock 1px #b9b9b9 bottom border; the wrapping card
+   is the border now */
+body.qbis-islands .panelWrapper > .panel { border: 0 !important; }
+body.qbis-islands .dynamicTableHeader,
+body.qbis-islands #torrentsTableFixedHeaderDiv,
+body.qbis-islands #torrentsTableFixedHeaderDiv .dynamicTableHeader {
+  background: var(--qb-surface-alt) !important; color: var(--qb-text-secondary) !important; text-shadow: none !important;
+}
+body.qbis-islands .dynamicTableHeader th,
+body.qbis-islands #torrentsTableFixedHeaderDiv th {
+  background: transparent !important; border-right: 0 !important; border-bottom: 1px solid var(--qb-border) !important;
+  color: var(--qb-text-secondary) !important; font-size: 11px !important; font-weight: 600 !important; text-shadow: none !important;
+}
+body.qbis-islands .dynamicTableHeader th:hover,
+body.qbis-islands #torrentsTableFixedHeaderDiv th:hover { background: #eef0f4 !important; color: var(--qb-text) !important; }
+body.qbis-islands #torrentsTableDiv table, body.qbis-islands .dynamicTable { background: transparent !important; color: var(--qb-text) !important; }
+body.qbis-islands #torrentsTableDiv td, body.qbis-islands .dynamicTable td {
+  border-bottom: 1px solid #eef0f3 !important; color: var(--qb-text) !important;
+}
+body.qbis-islands #torrentsTableDiv td, body.qbis-islands .dynamicTable td { font-size: 12px; }
+body.qbis-islands #torrentsTableDiv tbody tr, body.qbis-islands .dynamicTable tbody tr { background: transparent !important; transition: background-color 100ms ease; }
+body.qbis-islands #torrentsTableDiv tbody tr:hover,
+body.qbis-islands .dynamicTable tbody tr:hover { background: var(--qb-hover) !important; }
+body.qbis-islands #torrentsTableDiv tbody tr.selected,
+body.qbis-islands .dynamicTable tbody tr.selected { background: var(--qb-selected) !important; color: var(--qb-text) !important; }
+
+/* Progress pills (the WebUI builds them inline with clip-rect stacks) */
+body.qbis-islands .progressbar_wrapper {
+  border: 1px solid #d8dee8 !important; border-radius: 99px !important;
+  background: #e9edf3 !important; overflow: hidden !important;
+}
+body.qbis-islands .progressbar_wrapper .progressbar_dark {
+  background: linear-gradient(90deg, #3d7bf2, #5d9bff) !important; color: #fff !important;
+  font-size: 9.5px !important; font-weight: 600 !important;
+}
+body.qbis-islands .progressbar_wrapper .progressbar_light {
+  background: transparent !important; color: var(--qb-text-secondary) !important;
+  font-size: 9.5px !important; font-weight: 600 !important;
+}
+
+/* Details */
+body.qbis-islands #propertiesPanel_wrapper {
+  display: flex !important; flex: 0 0 42% !important; flex-direction: column !important; height: auto !important; margin-top: 0 !important;
+  overflow: hidden !important; box-sizing: border-box !important;
+}
+/* Collapsed: MochaUI keeps the header (tabs + expand toggle) inside the
+   wrapper and swaps `expanded` for `collapsed`; only the body disappears, so
+   the wrapper must shrink to the header instead of being display:none'd. */
+body.qbis-islands #propertiesPanel_wrapper.collapsed { height: auto !important; flex: 0 0 auto !important; }
+body.qbis-islands #propertiesPanel_wrapper.collapsed #propertiesPanel { flex: 0 0 auto !important; height: auto !important; }
+body.qbis-islands #propertiesPanel {
+  flex: 1 1 auto !important; min-height: 0 !important; height: auto !important; color: var(--qb-text) !important; box-sizing: border-box !important;
+  background: transparent !important; border: 0 !important; box-shadow: none !important;
+}
+/* the tab strip is an in-card header, matching the transfer list table header */
+body.qbis-islands #propertiesPanel_header {
+  flex: 0 0 auto !important;
+  background: var(--qb-surface-alt) !important;
+  border-bottom: 1px solid var(--qb-border) !important;
+  padding: 0 8px !important;
+}
+/* center tab strips vertically inside panel headers (stock pins them to the
+   top with a 2px offset, which reads as misaligned under CJK metrics) */
+/* only force flex on headers that hold real tab strips; the generic "Panel"
+   title headers of header:false panels are inline-hidden by MochaUI and must
+   stay hidden */
+body.qbis-islands #Filters_header,
+body.qbis-islands #transferList_header { display: none !important; }
+body.qbis-islands .panel-header { align-items: center !important; }
+body.qbis-islands #propertiesPanel_header,
+body.qbis-islands #LogPanel_header { display: flex !important; }
+body.qbis-islands .panel-headerContent {
+  padding-top: 0 !important; order: 1 !important;
+  display: flex !important; align-items: center !important; flex: 1 1 auto !important; min-width: 0 !important;
+}
+body.qbis-islands .panel-header .toolbox {
+  order: 2 !important; float: none !important; margin: 0 0 0 auto !important; display: flex !important; align-items: center !important;
+}
+/* card-family inner rhythm: 6px vertical / 8px horizontal */
+body.qbis-islands #propertiesPanel_pad { padding: 6px 8px !important; }
+body.qbis-islands #propertiesPanel h3, body.qbis-islands #propertiesPanel .panelHeader { color: var(--qb-text) !important; }
+body.qbis-islands #propertiesPanel_tabs, body.qbis-islands #propertiesPanel_tabs a { color: var(--qb-text-secondary) !important; }
+body.qbis-islands #propertiesPanel_tabs a.selected { border-radius: var(--qb-radius-sm) !important; background: var(--qb-active) !important; color: var(--qb-accent) !important; font-weight: 600 !important; }
+/* keep the collapse/expand chevron off the card edge */
+body.qbis-islands #propertiesPanel_header .panel-collapse,
+body.qbis-islands #propertiesPanel_header .panel-expand { margin-right: 8px; }
+body.qbis-islands #propertiesPanel fieldset {
+  border: 1px solid var(--qb-border) !important; border-radius: var(--qb-radius-sm) !important; background: transparent !important;
+}
+body.qbis-islands #propertiesPanel td.label { color: var(--qb-text-secondary) !important; }
+
+/* Footer */
+/* Footer — stock top-aligns the status table inside a fixed 30px strip with a
+   one-sided padding; center it as a flex box so any locale's text metrics sit
+   on the vertical midline. */
+body.qbis-islands #desktopFooterWrapper {
+  top: auto !important; right: var(--qb-gap) !important; bottom: var(--qb-gap) !important; left: var(--qb-gap) !important;
+  width: auto !important; height: 34px !important; min-height: 34px !important; box-sizing: border-box !important;
+  display: flex !important; align-items: center !important;
+  overflow-x: auto; overflow-y: hidden;
+}
+body.qbis-islands #desktopFooter,
+body.qbis-islands #desktopFooter table,
+body.qbis-islands #desktopFooter td { width: auto !important; background: transparent !important; color: var(--qb-text-secondary) !important; }
+body.qbis-islands #desktopFooter { height: auto !important; padding: 2px 8px !important; width: 100% !important; box-sizing: border-box !important; }
+/* the status table is absolutely positioned + right-aligned by JS in stock —
+   take it back into the flow (margin-left:auto keeps it right-aligned) so the
+   flex-centered footer actually wraps it */
+body.qbis-islands #desktopFooter table { position: static !important; float: none !important; margin-left: auto !important; }
+body.qbis-islands #desktopFooter td { white-space: nowrap; vertical-align: middle !important; }
+/* inline icon images ride the text baseline and sit high next to CJK text;
+   middle-align them on the line instead (stock patched this with -4px
+   margins on some icons only) */
+body.qbis-islands #desktopFooter td img {
+  vertical-align: middle !important; margin-bottom: 0 !important;
+}
+body.qbis-islands #desktopFooter td span#transferInfo { color: var(--qb-text); font-weight: 600; }
+
+/* Controls, menus and windows */
+body.qbis-islands button,
+body.qbis-islands input[type="button"],
+body.qbis-islands input[type="submit"] {
+  min-height: 26px; padding: 3px 12px !important; border: 1px solid var(--qb-border-strong) !important;
+  border-radius: var(--qb-radius-sm) !important; background: var(--qb-surface) !important; color: var(--qb-text) !important;
+  box-shadow: 0 1px 1px rgba(31, 35, 41, .04) !important;
+  transition: border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease;
+}
+body.qbis-islands button:hover,
+body.qbis-islands input[type="button"]:hover,
+body.qbis-islands input[type="submit"]:hover { border-color: #8a9cc1 !important; background: var(--qb-hover) !important; }
+body.qbis-islands button:focus-visible,
+body.qbis-islands input[type="button"]:focus-visible,
+body.qbis-islands input[type="submit"]:focus-visible { outline: 2px solid rgba(53, 116, 240, .45) !important; outline-offset: 1px; }
+body.qbis-islands input[type="text"],
+body.qbis-islands input[type="number"],
+body.qbis-islands input[type="password"],
+body.qbis-islands select,
+body.qbis-islands textarea {
+  border: 1px solid var(--qb-border-strong) !important; border-radius: var(--qb-radius-sm) !important;
+  background: var(--qb-surface) !important; color: var(--qb-text) !important; outline: none !important;
+}
+body.qbis-islands input:focus,
+body.qbis-islands select:focus,
+body.qbis-islands textarea:focus { border-color: var(--qb-accent) !important; box-shadow: 0 0 0 2px rgba(53, 116, 240, .16) !important; }
+body.qbis-islands fieldset { border: 1px solid var(--qb-border) !important; border-radius: var(--qb-radius-sm) !important; color: var(--qb-text) !important; }
+body.qbis-islands label { color: var(--qb-text) !important; }
+body.qbis-islands ul.contextMenu,
+body.qbis-islands ul.scrollableMenu {
+  padding: 5px !important; border: 1px solid var(--qb-border) !important; border-radius: var(--qb-radius-md) !important;
+  background: var(--qb-surface) !important; box-shadow: var(--qb-shadow-pop) !important; overflow: visible;
+}
+body.qbis-islands ul.contextMenu li,
+body.qbis-islands ul.scrollableMenu li { border: none !important; border-radius: 4px !important; color: var(--qb-text) !important; }
+body.qbis-islands ul.contextMenu li a,
+body.qbis-islands ul.scrollableMenu li a { color: inherit !important; }
+body.qbis-islands ul.contextMenu li ul,
+body.qbis-islands ul.scrollableMenu li ul {
+  padding: 5px !important; border: 1px solid var(--qb-border) !important; border-radius: var(--qb-radius-md) !important;
+  background: var(--qb-surface) !important; box-shadow: var(--qb-shadow-pop) !important;
+}
+body.qbis-islands ul.contextMenu li a.disabled,
+body.qbis-islands ul.scrollableMenu li a.disabled { color: var(--qb-text-muted) !important; }
+body.qbis-islands ul.contextMenu li:hover,
+body.qbis-islands ul.scrollableMenu li:hover { background: var(--qb-accent-soft) !important; }
+body.qbis-islands ul.contextMenu li a.disabled:hover { background: transparent !important; }
+body.qbis-islands ul.contextMenu li.separator,
+body.qbis-islands ul.contextMenu li.separator:hover { border-top: 1px solid var(--qb-border) !important; border-radius: 0 !important; background: transparent !important; }
+/* ── Dialog windows: one flat white card, quiet single shadow, seamless
+   titlebar — no bands, no stacked shadows ── */
+body.qbis-islands .mocha {
+  overflow: hidden; border: 1px solid var(--qb-border) !important; border-radius: 12px !important;
+  background: var(--qb-surface) !important;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 12px 32px rgba(16, 24, 40, .12) !important;
+  color: var(--qb-text) !important;
+}
+body.qbis-islands .mocha .mochaTitlebar,
+body.qbis-islands .mocha .titleBar {
+  background: transparent !important;
+  border-bottom: 0 !important;
+  padding: 0 10px !important;
+  box-sizing: border-box;
+}
+body.qbis-islands .mocha h3.mochaTitle,
+body.qbis-islands .mocha h3.title,
+body.qbis-islands .mocha h1.title {
+  background: transparent !important; border: 0 !important; text-shadow: none !important;
+  color: var(--qb-text) !important; font-size: 13px !important; font-weight: 600 !important;
+  line-height: 25px !important; padding: 0 !important;
+}
+body.qbis-islands .mocha.isFocused .mochaTitlebar h3 { color: var(--qb-text) !important; }
+body.qbis-islands .mocha:not(.isFocused) .mochaTitlebar h3 { color: var(--qb-text-secondary) !important; }
+body.qbis-islands .mocha .mochaContent,
+body.qbis-islands .mocha .content {
+  background: var(--qb-surface) !important; color: var(--qb-text) !important;
+  /* Some iframe dialogs are built slightly taller than their window; keep the
+     overflow reachable instead of clipping the action buttons. */
+  overflow: auto;
+}
+
+/* ── Dialog iframe content (upload.html, confirmdeletion.html, ...) ── */
+body.qbis-islands.qbis-frame {
+  background: var(--qb-surface) !important;
+  padding: 14px 18px 16px !important;
+  box-sizing: border-box;
+}
+body.qbis-islands.qbis-frame label { color: var(--qb-text-secondary) !important; }
+/* the in-content page title duplicates the window title; keep it quiet */
+body.qbis-islands.qbis-frame > p:first-of-type {
+  color: var(--qb-text-secondary) !important; font-size: 12px !important;
+  font-weight: 500 !important; text-align: left !important; margin: 0 0 10px !important;
+}
+body.qbis-islands.qbis-frame > center { margin: 0 0 12px !important; }
+body.qbis-islands.qbis-frame > center > p { color: var(--qb-text-muted) !important; font-size: 11px !important; margin: 0 !important; }
+body.qbis-islands.qbis-frame fieldset { border: 0 !important; padding: 0 !important; margin: 0 !important; }
+/* the dialog's confirm action is its primary button; cancel stays quiet */
+body.qbis-islands.qbis-frame #submitButton,
+body.qbis-islands.qbis-frame #confirmBtn {
+  background: var(--qb-accent) !important; border-color: var(--qb-accent) !important;
+  color: #fff !important; min-width: 68px;
+  box-shadow: none !important;
+}
+body.qbis-islands.qbis-frame #submitButton:hover,
+body.qbis-islands.qbis-frame #confirmBtn:hover { background: var(--qb-accent-hover) !important; border-color: var(--qb-accent-hover) !important; }
+body.qbis-islands.qbis-frame #cancelBtn { min-width: 68px; }
+
+/* Auto-hiding overlay scrollbars: hidden while idle, the thumb fades in when
+   the pointer is over the scrolling element. Track is always transparent so
+   nothing is occluded and content width never shifts. */
+body.qbis-islands ::-webkit-scrollbar { width: 10px; height: 10px; }
+body.qbis-islands ::-webkit-scrollbar-track { background: transparent; }
+body.qbis-islands ::-webkit-scrollbar-thumb {
+  border: 3px solid transparent; border-radius: 99px; background: transparent; background-clip: padding-box;
+}
+body.qbis-islands *:hover::-webkit-scrollbar-thumb { background: #c4c9d2; background-clip: padding-box; }
+body.qbis-islands *:hover::-webkit-scrollbar-thumb:hover { background: #9fa6b2; background-clip: padding-box; }
+body.qbis-islands ::-webkit-scrollbar-corner { background: transparent; }
+
+body.qbis-islands #desktopNavbar,
+body.qbis-islands #mochaToolbar,
+body.qbis-islands #pageWrapper,
+body.qbis-islands #desktopFooterWrapper { color: var(--qb-text); }
+body.qbis-islands a { color: var(--qb-accent); }

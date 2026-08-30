@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "qBittorrent Islands",
+  "version": "2.0.0",
+  "description": "Restyles the qBittorrent 4.6.x WebUI into an islands design — pure CSS reskin of the existing elements, no extra page elements.",
+  "minimum_chrome_version": "102",
+  "permissions": ["storage"],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "qBittorrent Islands",
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "css": ["src/skin/islands.css"],
+      "js": ["src/content/skin.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}
