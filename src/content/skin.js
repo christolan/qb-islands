@@ -49,8 +49,8 @@
 
   function start() {
     chrome.storage.local.get(['qbisMode']).then((data) => {
-      // `dark` and `light` were values in v2.0. Treat either saved choice
-      // as enabled so existing users keep the skin after upgrading.
+      // Only the literal `off` disables the skin; anything else — including
+      // no stored value on a first run — enables it.
       apply(data.qbisMode || 'on');
     });
     chrome.storage.onChanged.addListener((changes, area) => {

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "qBittorrent Islands",
   "version": "2.0.0",
-  "description": "Restyles the qBittorrent 4.6.x WebUI into an islands design — pure CSS reskin of the existing elements, no extra page elements.",
+  "description": "Restyles the qBittorrent 4.6.x WebUI into an islands card design with a JetBrains-IDE-inspired look — pure CSS reskin of the existing elements, no extra page elements.",
   "minimum_chrome_version": "102",
   "permissions": ["storage"],
   "icons": {

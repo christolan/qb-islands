@@ -1,4 +1,5 @@
-/** qBittorrent Islands — light, IDE-inspired skin for qBittorrent 4.6.x.
+/** qBittorrent Islands — light islands card design with a JetBrains-IDE-inspired
+ * look, for qBittorrent 4.6.x.
  * Applied only when skin.js adds `qbis-islands` to <body>. */
 
 body.qbis-islands {
